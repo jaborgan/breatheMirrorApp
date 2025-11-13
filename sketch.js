@@ -4,8 +4,8 @@ let targetValue;          // The next random value to ramp towards
 let startValue;           // The value at the start of the ramp
 let startTime;            // Time (in milliseconds) when the current ramp started
 
-const MIN_VAL = 0.022;    // Minimum value for the random range
-const MAX_VAL = 0.550;    // Maximum value for the random range
+const MIN_VAL = 0.001;    // Minimum value for the random range
+const MAX_VAL = 0.333;    // Maximum value for the random range
 let durationSlider;
 // const RAMP_DURATION = 10000; // 15 seconds in milliseconds
 //end ramp code
@@ -39,7 +39,7 @@ function setup() {
   
   //create slider for ramp_duration
   //range 1 second to 60 seconds
-  durationSlider = createSlider(1, 60, 15, 1);
+  durationSlider = createSlider(1, 12, 15, 1);
   //starts at 15, tep of 1 sec
   durationSlider.position(10, height+10);
   
@@ -54,7 +54,7 @@ function setup() {
 }
 
 function draw() {
-  background(0,1);
+  background(0);
   textSize(17);
   
   const RAMP_DURATION_SEC = durationSlider.value();
@@ -101,18 +101,18 @@ function draw() {
   
   
 
-  startAngle += 0.01666;
+  startAngle += 0.05;
   let angle = startAngle;
   //angleVel = map(mouseX, 0, width, 0.044, 0.770, 10000);
   angleVel = customGlobalVariable;
 
   for (let x = 0; x <= width; x += 1) {
     let y = map(sin(angle), -1, 1, 0, height);
-    stroke(0, 100);
+    stroke(0, 35);
     hueyH = map(y, 0, height, 175, 250)
     fill(hueyH, 50, 50, 25);
-    strokeWeight(1);
-    ellipse(x, y, 10, 0.5*(map(y, 0, height, 10, 300)));
+    strokeWeight(2);
+    ellipse(x, y, 3, 0.9*(map(y, 0, height, 10, 300)));
     angle += angleVel;
   }
     for (let x = 0; x <= width; x += 1.5) {
@@ -147,6 +147,9 @@ function draw() {
   text(`Current Value: ${nf(customGlobalVariable, 1, 3)}`, width -140, height -60);
   text(`Target Value: ${nf(targetValue, 1, 3)}`, width-140, height - 40);
   text(`Time to Next Change: ${nf(timeRemaining, 1, 1)}s`, width-166, height -20);
+  fill('blue');
+  let breathRectLength = map(RAMP_DURATION_SEC, 12, 0, 0, width);
+  rect(width/2, height/2, timeRemaining*width/12, 10, 25)
   strokeWeight(4);
   textSize(30);
   stroke(255,100,100);
